@@ -4,17 +4,17 @@ import datetime
 import bgtunnel
 import MySQLdb
 import re
+import click
 from emailer import *
 from mysqltunnel import TunnelSQL
 from dotenv import load_dotenv
 
 _ = load_dotenv()
-silent = True
 
 
 #### HEAR BE DRAGONS
-def check_hulls():
-    db = TunnelSQL(silent, cursor='DictCursor')
+def check_hulls(verbose):
+    db = TunnelSQL(verbose, cursor='DictCursor')
     sql = 'SELECT COUNT(id) AS COUNT FROM wp_nrb_hulls'
     count = db.execute(sql)[0]['COUNT']
     db.close()
@@ -38,10 +38,13 @@ def mail_results(subject, body):
     m.setHtmlBody(body)
     m.send()
 
-def main():
+@click.command()
+@click.option('--verbose', is_flag=True, help='show output')
+@click.option('--noemail', is_flag=True, help='do not send email')
+def main(verbose, noemail):
     try:
-        result = check_hulls()
-        if (result == 0):
+        result = check_hulls(not verbose)
+        if result == 0 and not noemail:
             mail_results(
                 'Check for Hulls Error',
                 '<p>There is a problem with the website, there are no hulls listed for any dealer in wp_nrb_hulls</p>'
