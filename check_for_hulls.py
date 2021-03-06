@@ -9,10 +9,12 @@ from emailer import *
 from mysqltunnel import TunnelSQL
 from dotenv import load_dotenv
 
-_ = load_dotenv()
 
+def get_current_dir():
+    if getattr(sys, 'frozen', False):
+        return sys._MEIPASS
+    return os.path.dirname(os.path.abspath(__file__))
 
-#### HEAR BE DRAGONS
 def check_hulls(verbose):
     db = TunnelSQL(verbose, cursor='DictCursor')
     sql = 'SELECT COUNT(id) AS COUNT FROM wp_nrb_hulls'
@@ -42,6 +44,7 @@ def mail_results(subject, body):
 @click.option('--verbose', is_flag=True, help='show output')
 @click.option('--noemail', is_flag=True, help='do not send email')
 def main(verbose, noemail):
+    _ = load_dotenv(get_current_dir() + '/.env')
     try:
         result = check_hulls(not verbose)
         if result == 0 and not noemail:
