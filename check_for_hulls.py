@@ -5,26 +5,23 @@ import bgtunnel
 import MySQLdb
 import re
 from emailer import *
+from mysqltunnel import TunnelSQL
 from dotenv import load_dotenv
 
-load_dotenv()
+_ = load_dotenv()
+silent = True
 
 
 #### HEAR BE DRAGONS
 def check_hulls():
-    forwarder = bgtunnel.open(ssh_user=os.getenv('SSH_USER'), ssh_address=os.getenv('SSH_HOST'), host_port=3306, bind_port=3307)
+    db = TunnelSQL(silent, cursor='DictCursor')
+    sql = 'SELECT COUNT(id) AS COUNT FROM wp_nrb_hulls'
+    count = db.execute(sql)[0]['COUNT']
+    db.close()
 
-    conn= MySQLdb.connect(host='127.0.0.1', port=3307, user=os.getenv('DB_USER'), passwd=os.getenv('DB_PASS'), db=os.getenv('DB_NAME'))
+    if not silent: print('Count: {}'.format(count))
 
-    cursor = conn.cursor()
-    cursor.execute('SELECT COUNT(id) AS COUNT FROM wp_nrb_hulls')
-    count = cursor.fetchone()
-
-    cursor.close()
-    conn.close()
-    forwarder.close()
-
-    return count[0]
+    return count
 
 
 def mail_results(subject, body):
@@ -35,7 +32,7 @@ def mail_results(subject, body):
     for email in mTo.split(','):
         m.addRecipient(email)
     m.addCC(os.getenv('MAIL_FROM'))
-   
+
     m.setSubject(subject)
     m.setTextBody("You should not see this text in a MIME aware reader")
     m.setHtmlBody(body)
