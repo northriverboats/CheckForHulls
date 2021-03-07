@@ -3,10 +3,10 @@ bgtunnel==0.4.1
 click==7.1.2
 importlib-metadata==2.1.1
 mailer==0.8.1
+mysql-tunnel @ git+https://github.com/northriverboats/mysql-tunnel@8047407b46484befa2026ac2bcfb765baef9ecdc
 mysqlclient==1.3.13
 pkg-resources==0.0.0
 pyinstaller==4.2
 pyinstaller-hooks-contrib==2020.11
 python-dotenv==0.10.1
-UNKNOWN==0.0.0
 zipp==1.2.0
