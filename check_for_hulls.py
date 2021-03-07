@@ -4,9 +4,10 @@ import datetime
 import bgtunnel
 import MySQLdb
 import re
+import sys
 import click
 from emailer import *
-from mysqltunnel import TunnelSQL
+from mysql_tunnel.mysql_tunnel import TunnelSQL
 from dotenv import load_dotenv
 
 
@@ -16,12 +17,12 @@ def get_current_dir():
     return os.path.dirname(os.path.abspath(__file__))
 
 def check_hulls(verbose):
-    db = TunnelSQL(verbose, cursor='DictCursor')
-    sql = 'SELECT COUNT(id) AS COUNT FROM wp_nrb_hulls'
-    count = db.execute(sql)[0]['COUNT']
-    db.close()
+    with TunnelSQL(verbose, cursor='DictCursor') as db:
+        sql = 'SELECT COUNT(id) AS COUNT FROM wp_nrb_hulls'
+        count = db.execute(sql)[0]['COUNT']
 
-    if not silent: print('Count: {}'.format(count))
+    if not verbose:
+        print('Count: {}'.format(count))
 
     return count
 
