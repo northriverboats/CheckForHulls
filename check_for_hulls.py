@@ -5,6 +5,7 @@ import bgtunnel
 import MySQLdb
 import re
 import sys
+import os
 import click
 from emailer.emailer import Email
 from mysql_tunnel.mysql_tunnel import TunnelSQL
