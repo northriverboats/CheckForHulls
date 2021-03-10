@@ -6,7 +6,7 @@ import MySQLdb
 import re
 import sys
 import click
-from emailer import *
+from emailer.emailer import Email
 from mysql_tunnel.mysql_tunnel import TunnelSQL
 from dotenv import load_dotenv
 
