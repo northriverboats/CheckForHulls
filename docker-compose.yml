@@ -3,6 +3,9 @@ version: "2"
 services:
   python-app:
     image: nrb-python
+    environment:
+      - TZ=America/Los_Angeles
+      - HELP=${HELP}
     volumes:
       - ./:/app
     entrypoint: [python, check_for_hulls.py]
