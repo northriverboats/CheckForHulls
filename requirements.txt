@@ -1,11 +1,10 @@
 altgraph==0.17
 bgtunnel==0.4.1
-click==7.1.2
-importlib-metadata==2.1.1
-mailer==0.8.1
-mysql-tunnel @ git+https://github.com/northriverboats/mysql-tunnel@8047407b46484befa2026ac2bcfb765baef9ecdc
+click==8.1.3
+emailer @ git+https://github.com/northriverboats/emailer.git@eefaf8155cb4bcc2f108f9ac28615d57bbe2acb1
+mysql-tunnel @ git+https://github.com/northriverboats/mysql-tunnel@fb06b6f3949890a0cb44435dc55de4ffcd6cdc71
 mysqlclient==1.3.13
-pkg-resources==0.0.0
+pkg_resources==0.0.0
 pyinstaller==4.2
 pyinstaller-hooks-contrib==2020.11
 python-dotenv==0.10.1
