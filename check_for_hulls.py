@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+"""
+Send notification if number of hulls in table on website is 0
+"""
+
 import datetime
 import bgtunnel
 import MySQLdb
@@ -10,6 +14,16 @@ import click
 from emailer.emailer import Email
 from mysql_tunnel.mysql_tunnel import TunnelSQL
 from dotenv import load_dotenv
+
+#### HEAR BE DRAGONS
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 def check_hulls(verbose):
     with TunnelSQL(verbose, cursor='DictCursor') as db:
@@ -49,7 +63,7 @@ def main(verbose, noemail):
         bundle_dir = os.path.dirname(os.path.abspath(__file__))
 
     # load environmental variables
-    load_dotenv(bundle_dir + "/.env")
+    load_dotenv(dotenv_path=resource_path(".env"))
 
     if os.getenv('HELP'):
       with click.get_current_context() as ctx:
