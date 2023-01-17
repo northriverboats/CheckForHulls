@@ -41,20 +41,20 @@ def mail_results(subject, body):
     mTo = os.getenv('MAIL_TO')
 
     m = Email(os.getenv('MAIL_SERVER'))
-    m.setPort(os.getenv('MAIL_PORT'))
-    m.setTLS(os.getenv('MAIL_TLS'))
-    m.setLogin(os.getenv('MAIL_LOGIN'))
-    m.setPassword(os.getenv('MAIL_PASSWORD'))
+    mail.setPort(os.getenv('MAIL_PORT'))
+    mail.setTLS(os.getenv('MAIL_TLS'))
+    mail.setLogin(os.getenv('MAIL_LOGIN'))
+    mail.setPassword(os.getenv('MAIL_PASSWORD'))
 
-    m.setFrom(mFrom)
+    mail.setFrom(mFrom)
     for email in mTo.split(','):
-        m.addRecipient(email)
-    m.addCC(os.getenv('MAIL_FROM'))
+        mail.addRecipient(email)
+    mail.addCC(os.getenv('MAIL_FROM'))
 
-    m.setSubject(subject)
-    m.setTextBody("You should not see this text in a MIME aware reader")
-    m.setHtmlBody(body)
-    m.send()
+    mail.setSubject(subject)
+    mail.setTextBody("You should not see this text in a MIME aware reader")
+    mail.setHtmlBody(body)
+    mail.send()
 
 @click.command()
 @click.option('--verbose', is_flag=True, help='show output')
