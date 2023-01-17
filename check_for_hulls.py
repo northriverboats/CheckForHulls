@@ -11,7 +11,7 @@ import re
 import sys
 import os
 import click
-from emailer.emailer import Email
+from emailer import Email
 from mysql_tunnel.mysql_tunnel import TunnelSQL
 from dotenv import load_dotenv
 
@@ -39,7 +39,13 @@ def check_hulls(verbose):
 def mail_results(subject, body):
     mFrom = os.getenv('MAIL_FROM')
     mTo = os.getenv('MAIL_TO')
+
     m = Email(os.getenv('MAIL_SERVER'))
+    m.setPort(os.getenv('MAIL_PORT'))
+    m.setTLS(os.getenv('MAIL_TLS'))
+    m.setLogin(os.getenv('MAIL_LOGIN'))
+    m.setPassword(os.getenv('MAIL_PASSWORD'))
+
     m.setFrom(mFrom)
     for email in mTo.split(','):
         m.addRecipient(email)
