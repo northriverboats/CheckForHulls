@@ -1,7 +1,7 @@
 altgraph==0.17
 bgtunnel==0.4.1
 click==8.1.3
-emailer @ git+https://github.com/northriverboats/emailer.git@eefaf8155cb4bcc2f108f9ac28615d57bbe2acb1
+emailer @ git+https://github.com/northriverboats/emailer.git@98653a1c9294fa7a6f46b824175511d206fd20cc
 mysql-tunnel @ git+https://github.com/northriverboats/mysql-tunnel@fb06b6f3949890a0cb44435dc55de4ffcd6cdc71
 mysqlclient==1.3.13
 pkg_resources==0.0.0
