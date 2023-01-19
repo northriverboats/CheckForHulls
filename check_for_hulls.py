@@ -11,7 +11,7 @@ import re
 import sys
 import os
 import click
-from emailer import Email
+from emailer import mail_results
 from mysql_tunnel.mysql_tunnel import TunnelSQL
 from dotenv import load_dotenv
 
@@ -34,27 +34,6 @@ def check_hulls(verbose):
         print('Count: {}'.format(count))
 
     return count
-
-
-def mail_results(subject, body):
-    mFrom = os.getenv('MAIL_FROM')
-    mTo = os.getenv('MAIL_TO')
-
-    m = Email(os.getenv('MAIL_SERVER'))
-    mail.setPort(os.getenv('MAIL_PORT'))
-    mail.setTLS(os.getenv('MAIL_TLS'))
-    mail.setLogin(os.getenv('MAIL_LOGIN'))
-    mail.setPassword(os.getenv('MAIL_PASSWORD'))
-
-    mail.setFrom(mFrom)
-    for email in mTo.split(','):
-        mail.addRecipient(email)
-    mail.addCC(os.getenv('MAIL_FROM'))
-
-    mail.setSubject(subject)
-    mail.setTextBody("You should not see this text in a MIME aware reader")
-    mail.setHtmlBody(body)
-    mail.send()
 
 @click.command()
 @click.option('--verbose', is_flag=True, help='show output')
