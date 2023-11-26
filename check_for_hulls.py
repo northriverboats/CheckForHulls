@@ -11,7 +11,7 @@ import re
 import sys
 import os
 import click
-from emailer import mail_results
+from envelopes import Envelope
 from mysql_tunnel.mysql_tunnel import TunnelSQL
 from dotenv import load_dotenv
 
@@ -34,6 +34,48 @@ def check_hulls(verbose):
         print('Count: {}'.format(count))
 
     return count
+
+def mail_results(subject, body, attachment=''):
+    """ Send emial with html formatted body and parameters from env"""
+    envelope = Envelope(   
+        from_addr=split_address(os.environ.get('MAIL_FROM')),
+        subject=subject,
+        html_body=body
+    )          
+                   
+    # add standard recepients
+    tos = os.environ.get('MAIL_TO','').split(',')
+    if tos[0]:         
+        for to in tos:
+            envelope.add_to_addr(to)
+                      
+    # add carbon coppies
+    ccs = os.environ.get('MAIL_CC','').split(',')
+    if ccs[0]:        
+        for cc in ccs:
+            envelope.add_cc_addr(cc)
+              
+    # add blind carbon copies recepients
+    bccs = os.environ.get('MAIL_BCC','').split(',')
+    if bccs[0]:
+        for bcc in bccs:
+            envelope.add_bcc_addr(bcc)
+        
+    if attachment:
+        envelope.add_attachment(attachment)
+                  
+    # send the envelope using an ad-hoc connection...
+    try:          
+        _ = envelope.send(
+            os.environ.get('MAIL_SERVER'),
+            port=os.environ.get('MAIL_PORT'),
+            login=os.environ.get('MAIL_LOGIN'),
+            password=os.envirion.get('MAIL_PASSWORD'),
+            tls=True
+        )
+    except SMTPException:
+        click.echo("SMTP EMail error")
+
 
 @click.command()
 @click.option('--verbose', is_flag=True, help='show output')

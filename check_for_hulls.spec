@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['check_for_hulls.py'],
-             pathex=['/home/fwarren/builds/check_for_hulls'],
+             pathex=[],
              binaries=[],
              datas=[
                  ('.env','.'),
